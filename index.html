@@ -6,31 +6,100 @@
   <script id="challenge">
     // 👉 CHALLENGE 1
     function profileActivation(profile, reason) {
-
+        if (profile.active === true) {
+            profile.active = false;
+            profile.reason = reason;
+        } else {
+            profile.active = true;
+        }
+        return profile;
     }
-
     // 👉 CHALLENGE 2
     function mineSweeper(grid, x, y) {
+      if (x<0 || x >= grid.length || y < 0 || y >= grid[x].length) {
+        return "invalid coordinates";
+      }
+      return grid[y][x] === "🟥" ? "mine hit!" : "safe";
 
+     
     }
+    // 👉 CHALLENGE 3 
+     function booleanize(obj) {
+  if (typeof obj !== 'object' || obj === null) {
+    return 'Invalid input';
+  }
 
-    // 👉 CHALLENGE 3
-    function booleanize(obj) {
-
+  let newObj = {};
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      let value = obj[key];
+      if (value === 0) {
+        newObj[key] = false;
+      } else if (value === 1) {
+        newObj[key] = true;
+      } else if (value !== null) {
+        newObj[key] = value;
+      }
     }
+  }
+  return newObj;
+}
+
+
+
+
+
+
+
+    // function booleanize(obj){
+    //   for(let key in obj){
+    //     if(key.length >9 ){
+    //       return 'shorten all prop names to 9 chars or less';                           
+    //   }
+    // }
+    //    for(let key in obj){
+    //     if(obj[key] === 0){
+    //       obj[key] = false;
+    //        } else if(obj[key] === 1){
+    //          obj[key] = true;
+    //         } else if(obj[key] === null){
+    //           delete obj[key];
+    //         }
+    //        } 
+            
+    //        return obj;
+        
 
     // 👉 CHALLENGE 4
-    function scrub(text, forbidden) {
+    function scrub(text, forbiddenWords) {
+    return forbiddenWords.reduce((scrubbedText, word) => 
+        scrubbedText.replaceAll(word, 'x'.repeat(word.length)), text);
+}
 
+
+    // function scrub(text, forbiddenWords) {
+    //     let scrubbedText = text;
+    //     for (let word of forbiddenWords) {
+    //         scrubbedText = scrubbedText.replace(new RegExp(word, 'g'), 'x'.repeat(word.length));
+    //     }
+    //     return scrubbedText;
+  
+    
+// /      // 👉 CHALLENGE 5 (bonus, NOT graded)
+          function normalizePhoneNumber(num) {
+          let digits = num.replace(/\D/g, '');
+           if (digits.length !== 10) {
+          return "Invalid phone number";
     }
+  return digits.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+  }
 
-    // 👉 CHALLENGE 5 (bonus, NOT graded)
-    function normalizePhoneNumber(num) {
 
-    }
 
-    // 👉 CHALLENGE 6 (bonus, NOT graded)
-    function diceRolls() {
+    
+
+     // 👉 CHALLENGE 6 (bonus, NOT graded)
+     function diceRolls() {
 
     }
 
@@ -103,11 +172,12 @@
   <script id="lodash" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
   <!-- The following script executes the tests you see when you open the Console in Chrome -->
   <script id="tests">
-    runTests('CHALLENGE 1 - profileActivation', profileActivation, [
+    runTests('CHALLENGE 1 - profileActivation', profileActivation), [
       [[{ active: true }], 'confirm status manually'],
       [[{ active: true }, 'because'], { active: false, reason: 'because' }],
       [[{ active: false, reason: 'because' }], { active: true }],
-    ])
+    ];
+    ; // Add a semicolon at the end of the line
     runTests('CHALLENGE 2 - mineSweeper', mineSweeper, [
       [[[["🟥", "🟦", "🟥"], ["🟦", "🟥", "🟥"], ["🟥", "🟦", "🟦"]], 0, 4], "invalid coordinates"],
       [[[["🟥", "🟦", "🟥"], ["🟦", "🟥", "🟥"], ["🟥", "🟦", "🟦"]], 0, 1], "invalid coordinates"],
@@ -146,10 +216,10 @@
       [["1111111111"], "(111) 111-1111"],
       [["9876543210"], "(987) 654-3210"],
     ])
-    console.log('\nCHALLENGE 6 (OPTIONAL) does not have auto tests - diceRolls')
-    function runTests(testName, func, tests) {
+     console.log('\nCHALLENGE 6 (OPTIONAL) does not have auto tests - diceRolls')
+      function runTests(testName, func, tests) {
       let results = []
-      tests.forEach(test => {
+       tests.forEach(test => {
         const originalArgsList = _.cloneDeep(test[0])
         const argsList = test[0]
         const expected = test[1]
@@ -190,4 +260,46 @@
   </script>
 </body>
 
-</html>
+  </html>
+ 
+ <!-- runTests('CHALLENGE 6 (OPTIONAL) does not have auto tests - diceRolls')
+function runTests(testName, func, tests) {
+  let results = []
+  tests.forEach(test => {
+    const originalArgsList = _.cloneDeep(test[0])
+    const argsList = test[0]
+    const expected = test[1]
+    const actual = func.apply(null, argsList)
+    results.push([argsList, expected, actual, originalArgsList])
+  
+  console.log('\n' + testName)
+  if (results.every(result => _.isEqual(result[1], result[2]))) console.log('\t✅ All tests pass')
+  else if (results.every(result => !_.isEqual(result[1], result[2]))) console.log('\t❌ All tests fail')
+  else results.forEach((result, idx) => {
+    if (_.isEqual(result[1], result[2])) console.log(`\t✅ Test ${idx + 1} passes`)
+    else console.log(`\t❌ Test ${idx + 1} fails:
+       ${func.name}(${result[3].map(JSON.stringify)})
+       👉 should return ${JSON.stringify(result[1])}
+       👉 but returns ${JSON.stringify(result[2])}`) -->
+
+<!-- }
+const gridElems = [Array.from(row1.children), Array.from(row2.children), Array.from(row3.children)]
+const squares = ["🟥", "🟦"]
+let grid = [[], [], []]
+gridElems.forEach((row, idxRow) => {
+  row.forEach((square, idxSquare) => {
+    const emoji = squares[Math.floor(Math.random() * 2)]
+    grid[idxRow].push(emoji)
+    if (emoji === squares[0]) square.style.backgroundColor = '#ffecec'
+    else square.style.backgroundColor = '#f2f2ff'
+    square.onclick = () => {
+      const x = idxSquare + 1
+      const y = idxRow + 1
+      console.log(`\nYou clicked coordinates [${x}, ${y}]`)
+      outcome.textContent = mineSweeper(grid, x, y)
+    }
+  })
+})
+phoneNumInput.oninput = evt => {
+  normalized.textContent = normalizePhoneNumber(evt.target.value)
+}   -->
